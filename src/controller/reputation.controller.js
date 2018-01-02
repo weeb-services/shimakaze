@@ -58,18 +58,12 @@ class ReputationController {
 
     async increaseReputation(userId, botId, accountId, increaseBy) {
         let user = await this._getReputationUser(userId, botId, accountId, true);
-        if (!user) {
-            user = await this._getReputationUser(userId, botId, accountId, true);
-        }
         user = await this._setReputation(user, user.reputation += increaseBy, user.cooldown);
         return {user};
     }
 
     async decreaseReputation(userId, botId, accountId, increaseBy) {
         let user = await this._getReputationUser(userId, botId, accountId, true);
-        if (!user) {
-            user = await this._getReputationUser(userId, botId, accountId, true);
-        }
         user = await this._setReputation(user, user.reputation -= increaseBy, user.cooldown);
         return {user};
     }
