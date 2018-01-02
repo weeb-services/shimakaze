@@ -13,7 +13,9 @@ function getNextAvailableReputation(user) {
         return a.getTime() - b.getTime();
     });
     cooldowns = cooldowns.map((cooldown) => {
-        return cooldown.getTime() - Date.now();
+        cooldown = cooldown.getTime() - Date.now();
+        cooldown += 1000 * 60 * 60 * 24;
+        return cooldown;
     });
     return cooldowns;
 }
