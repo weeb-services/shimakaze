@@ -1,9 +1,9 @@
 {
   "host": "127.0.0.1",
-  "port": 9000,
-  "dburl": "mongodb://localhost/example-api",
+  "port": 9020,
+  "dburl": "mongodb://localhost/shimakaze",
   "env": "development",
-  "irohUrl": "http://dev.weeb.sh/accounts",
+  "irohUrl": "http://localhost:9020",
   "whitelist": [
     {
       "path": "/"
