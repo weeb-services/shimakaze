@@ -12,7 +12,7 @@ class ReputationController {
     async addReputation(userId, botId, accountId, targetUserId) {
         let sourceUser = await this._getReputationUser(userId, botId, accountId, true);
         let targetUser = await this._getReputationUser(targetUserId, botId, accountId, true);
-        let settings = await this._getSettings(accountId);
+        let settings = await this.getSettings(accountId);
         if (!this._checkCooldown(sourceUser, settings)) {
             return {code: 1, message: 'The user used all of his reputations.', user: sourceUser};
         }
