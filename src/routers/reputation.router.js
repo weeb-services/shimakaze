@@ -6,7 +6,7 @@ const validator = require('../validator/index.js')
 const Ajv = require('ajv')
 const ajv = new Ajv({allErrors: true})
 const reputationUtils = require('../utils')
-
+const SettingsController = require('../controller/settings.controller')
 class ReputationRouter extends BaseRouter {
   constructor () {
     super()
@@ -17,7 +17,7 @@ class ReputationRouter extends BaseRouter {
     })
     this.get('/:bot_id/:user_id', async (req) => {
       const reputationUser = await this.repController.getReputation(req.params.user_id, req.params.bot_id, req.account.id)
-      const settings = await this.repController.getSettings(req.account.id)
+      const settings = await SettingsController.getSettings(req.account.id)
       reputationUser.user.availableReputations = reputationUtils.getAvailableReputations(reputationUser.user, settings, Date.now())
       reputationUser.user.nextAvailableReputations = reputationUtils.getNextAvailableReputation(reputationUser.user)
       return reputationUser
