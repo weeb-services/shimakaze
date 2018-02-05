@@ -13,6 +13,7 @@ const permNodes = require('./permNodes.json')
 const GenericRouter = require('wapi-core').GenericRouter
 const WildcardRouter = require('wapi-core').WildcardRouter
 const ReputationRouter = require('./routers/reputation.router')
+const SettingsRouter = require('./routers/settings.router')
 
 const AuthMiddleware = require('wapi-core').AccountAPIMiddleware
 
@@ -62,6 +63,7 @@ const init = async () => {
   app.use(new GenericRouter(pkg.version, `Welcome to ${pkg.name}, a simple reputation api`, `${pkg.name}-${config.env}`, permNodes).router())
 
   // add custom routers here:
+  app.use(new SettingsRouter().router())
   app.use(new ReputationRouter().router())
 
   // Always use this last

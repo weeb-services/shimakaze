@@ -1,17 +1,11 @@
 const ReputationModel = require('../DB/reputation.mongo')
-const SettingsModel = require('../DB/settings.mongo')
-const defaultSettings = {
-  reputationPerDay: 2,
-  maximumReputation: 0,
-  maximumReputationGivenDay: 0,
-  reputationCooldown: new Date(1000 * 60 * 60 * 24)
-}
+const SettingsController = require('./settings.controller')
 
 class ReputationController {
   async addReputation (userId, botId, accountId, targetUserId) {
     let sourceUser = await this._getReputationUser(userId, botId, accountId, true)
     const targetUser = await this._getReputationUser(targetUserId, botId, accountId, true)
-    const settings = await this.getSettings(accountId)
+    const settings = await SettingsController.getSettings(accountId)
     if (!this._checkCooldown(sourceUser, settings)) {
       return {code: 1, message: 'The user used all of his reputations.', user: sourceUser}
     }
@@ -189,14 +183,6 @@ class ReputationController {
     })
     await user.save()
     return user
-  }
-
-  async getSettings (accountId) {
-    const settings = await SettingsModel.findOne({accountId})
-    if (!settings) {
-      return defaultSettings
-    }
-    return settings
   }
 }
 
