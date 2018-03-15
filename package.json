@@ -4,12 +4,12 @@
   "description": "Api for reputation",
   "main": "src/index.js",
   "dependencies": {
-    "ajv": "^5.5.2",
+    "@weeb_services/wapi-core": "^1.4.1-alpha8",
+    "ajv": "^6.1.1",
     "body-parser": "^1.17.2",
     "cors": "^2.8.4",
     "express": "^4.15.3",
-    "mongoose": "^4.11.4",
-    "wapi-core": "git+https://github.com/weeb-services/wapi-core.git",
+    "mongoose": "^5.0.3",
     "winston": "^2.3.1"
   },
   "devDependencies": {
