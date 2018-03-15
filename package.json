@@ -1,6 +1,6 @@
 {
   "name": "shimakaze",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Api for reputation",
   "main": "src/index.js",
   "dependencies": {
