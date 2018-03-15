@@ -16,6 +16,7 @@ const ReputationRouter = require('./routers/reputation.router')
 const SettingsRouter = require('./routers/settings.router')
 
 const AuthMiddleware = require('@weeb_services/wapi-core').AccountAPIMiddleware
+const TrackMiddleware = require('@weeb_services/wapi-core').TrackingMiddleware
 
 const Registrator = require('@weeb_services/wapi-core').Registrator
 const ShutdownHandler = require('@weeb_services/wapi-core').ShutdownHandler
@@ -60,6 +61,10 @@ const init = async () => {
 
   // Auth middleware
   app.use(new AuthMiddleware(config.irohUrl, `${pkg.name}/${pkg.version}/${config.env}`, config.whitelist).middleware())
+
+  if (config.track) {
+    app.use(new TrackMiddleware(pkg.name, pkg.version, config.env, config.track).middleware())
+  }
 
   // Routers
   app.use(new GenericRouter(pkg.version, `Welcome to ${pkg.name}, a simple reputation api`, `${pkg.name}-${config.env}`, permNodes).router())
