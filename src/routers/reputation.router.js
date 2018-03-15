@@ -1,6 +1,6 @@
 'use strict'
-const BaseRouter = require('wapi-core').BaseRouter
-const HTTPCodes = require('wapi-core').Constants.HTTPCodes
+const BaseRouter = require('@weeb_services/wapi-core').BaseRouter
+const HTTPCodes = require('@weeb_services/wapi-core').Constants.HTTPCodes
 const ReputationController = require('../controller/reputation.controller')
 const validator = require('../validator/index.js')
 const Ajv = require('ajv')
