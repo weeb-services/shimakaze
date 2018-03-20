@@ -3,6 +3,7 @@
   "version": "1.1.1",
   "description": "Api for reputation",
   "main": "src/index.js",
+  "serviceName": "reputation",
   "dependencies": {
     "@weeb_services/wapi-core": "^1.4.1-alpha8",
     "ajv": "^6.1.1",
