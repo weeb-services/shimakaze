@@ -4,6 +4,12 @@
   "dburl": "mongodb://localhost/shimakaze",
   "env": "development",
   "irohUrl": "http://localhost:9020",
+  "track": "",
+  "registration": {
+    "enabled": false,
+    "host": "",
+    "token": ""
+  },
   "whitelist": [
     {
       "path": "/"

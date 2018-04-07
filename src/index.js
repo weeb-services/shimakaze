@@ -10,12 +10,25 @@ mongoose.Promise = Promise
 const pkg = require('../package.json')
 const permNodes = require('./permNodes.json')
 
-const GenericRouter = require('wapi-core').GenericRouter
-const WildcardRouter = require('wapi-core').WildcardRouter
+const GenericRouter = require('@weeb_services/wapi-core').GenericRouter
+const WildcardRouter = require('@weeb_services/wapi-core').WildcardRouter
 const ReputationRouter = require('./routers/reputation.router')
 const SettingsRouter = require('./routers/settings.router')
 
-const AuthMiddleware = require('wapi-core').AccountAPIMiddleware
+const AuthMiddleware = require('@weeb_services/wapi-core').AccountAPIMiddleware
+const TrackMiddleware = require('@weeb_services/wapi-core').TrackingMiddleware
+
+const Registrator = require('@weeb_services/wapi-core').Registrator
+const ShutdownHandler = require('@weeb_services/wapi-core').ShutdownHandler
+
+const config = require('../config/main')
+
+let registrator
+
+if (config.registration && config.registration.enabled) {
+  registrator = new Registrator(config.registration.host, config.registration.token)
+}
+let shutdownManager
 
 winston.remove(winston.transports.Console)
 winston.add(winston.transports.Console, {
@@ -24,18 +37,8 @@ winston.add(winston.transports.Console, {
 })
 
 const init = async () => {
-  let config
   try {
-    config = require('../config/main.json')
-  } catch (e) {
-    winston.error(e)
-    winston.error('Failed to require config.')
-    return process.exit(1)
-  }
-  winston.info('Config loaded.')
-
-  try {
-    await mongoose.connect(config.dburl, {useMongoClient: true})
+    await mongoose.connect(config.dburl)
   } catch (e) {
     winston.error('Unable to connect to Mongo Server.')
     return process.exit(1)
@@ -59,6 +62,10 @@ const init = async () => {
   // Auth middleware
   app.use(new AuthMiddleware(config.irohUrl, `${pkg.name}/${pkg.version}/${config.env}`, config.whitelist).middleware())
 
+  if (config.track) {
+    app.use(new TrackMiddleware(pkg.name, pkg.version, config.env, config.track).middleware())
+  }
+
   // Routers
   app.use(new GenericRouter(pkg.version, `Welcome to ${pkg.name}, a simple reputation api`, `${pkg.name}-${config.env}`, permNodes).router())
 
@@ -69,7 +76,11 @@ const init = async () => {
   // Always use this last
   app.use(new WildcardRouter().router())
 
-  app.listen(config.port, config.host)
+  const server = app.listen(config.port, config.host)
+  shutdownManager = new ShutdownHandler(server, registrator, mongoose, pkg.name)
+  if (registrator) {
+    await registrator.register(pkg.serviceName, [config.env], config.port)
+  }
   winston.info(`Server started on ${config.host}:${config.port}`)
 }
 
@@ -79,3 +90,6 @@ init()
     winston.error('Failed to initialize.')
     process.exit(1)
   })
+
+process.on('SIGTERM', () => shutdownManager.shutdown())
+process.on('SIGINT', () => shutdownManager.shutdown())

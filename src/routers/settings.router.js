@@ -1,9 +1,9 @@
-const BaseRouter = require('wapi-core').BaseRouter
+const BaseRouter = require('@weeb_services/wapi-core').BaseRouter
 const SettingsController = require('../controller/settings.controller')
 const validator = require('../validator/index.js')
 const Ajv = require('ajv')
 const ajv = new Ajv({allErrors: true})
-const HTTPCodes = require('wapi-core').Constants.HTTPCodes
+const HTTPCodes = require('@weeb_services/wapi-core').Constants.HTTPCodes
 
 class SettingsRouter extends BaseRouter {
   constructor () {
