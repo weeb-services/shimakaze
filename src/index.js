@@ -77,7 +77,7 @@ const init = async () => {
   app.use(new WildcardRouter().router())
 
   const server = app.listen(config.port, config.host)
-  shutdownManager = new ShutdownHandler(server, registrator, mongoose, pkg.name)
+  shutdownManager = new ShutdownHandler(server, registrator, mongoose, pkg.serviceName)
   if (registrator) {
     await registrator.register(pkg.serviceName, [config.env], config.port)
   }
