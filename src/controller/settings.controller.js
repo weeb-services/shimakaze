@@ -9,6 +9,8 @@ const defaultSettings = {
 class SettingsController {
   static async getSettings (accountId) {
     const settings = await SettingsModel.findOne({accountId})
+      .lean()
+      .exec()
     if (!settings) {
       return Object.assign({}, defaultSettings)
     }
@@ -18,8 +20,9 @@ class SettingsController {
   static async updateSettings (accountId, updatedSettings) {
     updatedSettings = this._fixReputationCooldown(updatedSettings)
     updatedSettings = this._fillMissingFields(accountId, updatedSettings)
-    console.log(updatedSettings)
     const settings = await SettingsModel.findOne({accountId})
+      .lean()
+      .exec()
     if (!settings) {
       await new SettingsModel(updatedSettings).save()
       return updatedSettings
