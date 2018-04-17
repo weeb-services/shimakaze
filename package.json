@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "serviceName": "reputation",
   "dependencies": {
-    "@weeb_services/wapi-core": "^1.4.1",
+    "@weeb_services/wapi-core": "^1.4.2",
     "ajv": "^6.4.0",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
