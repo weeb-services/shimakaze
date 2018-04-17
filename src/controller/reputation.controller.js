@@ -12,7 +12,7 @@ class ReputationController {
     sourceUser = this._removeOldCooldowns(sourceUser, settings)
     targetUser.givenReputation = this._checkGivenReputation(targetUser)
     const reputationLimits = this._checkReputationLimits(targetUser, settings)
-    if (reputationLimits.maximumReputationGivenDay || reputationLimits.maximumReputation) {
+    if (reputationLimits.maximumReputationReceivedDay || reputationLimits.maximumReputation) {
       return this._returnReputationLimits(reputationLimits, targetUser, settings)
     }
     await this._increaseReputation(targetUser)
@@ -115,11 +115,11 @@ class ReputationController {
   }
 
   _returnReputationLimits (reputationLimits, targetUser, settings) {
-    if (reputationLimits.maximumReputationGivenDay) {
+    if (reputationLimits.maximumReputationReceivedDay) {
       return {
         code: 2,
         message: 'The user received the maximum amount of reputation for today',
-        maximumReputationGivenDay: settings.maximumReputationGivenDay,
+        maximumReputationReceivedDay: settings.maximumReputationReceivedDay,
         user: targetUser
       }
     } else {
@@ -145,12 +145,12 @@ class ReputationController {
   }
 
   _checkReputationLimits (user, settings) {
-    const limits = {maximumReputation: false, maximumReputationGivenDay: false}
+    const limits = {maximumReputation: false, maximumReputationReceivedDay: false}
     if (settings.maximumReputation !== 0) {
       limits.maximumReputation = user.reputation >= settings.maximumReputation
     }
-    if (settings.maximumReputationGivenDay !== 0) {
-      limits.maximumReputationGivenDay = user.givenReputation.length >= settings.maximumReputation
+    if (settings.maximumReputationReceivedDay !== 0) {
+      limits.maximumReputationReceivedDay = user.givenReputation.length >= settings.maximumReputation
     }
     return limits
   }

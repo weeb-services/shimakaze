@@ -2,7 +2,7 @@ const SettingsModel = require('../DB/settings.mongo')
 const defaultSettings = {
   reputationPerDay: 2,
   maximumReputation: 0,
-  maximumReputationGivenDay: 0,
+  maximumReputationReceivedDay: 0,
   reputationCooldown: new Date(1000 * 60 * 60 * 24)
 }
 
@@ -10,15 +10,16 @@ class SettingsController {
   static async getSettings (accountId) {
     const settings = await SettingsModel.findOne({accountId})
     if (!settings) {
-      return defaultSettings
+      return Object.assign({}, defaultSettings)
     }
     return settings
   }
 
   static async updateSettings (accountId, updatedSettings) {
     updatedSettings = this._fixReputationCooldown(updatedSettings)
-    updatedSettings = this._fillMissingFields(updatedSettings)
-    const settings = SettingsModel.findOne({accountId})
+    updatedSettings = this._fillMissingFields(accountId, updatedSettings)
+    console.log(updatedSettings)
+    const settings = await SettingsModel.findOne({accountId})
     if (!settings) {
       await new SettingsModel(updatedSettings).save()
       return updatedSettings
@@ -35,12 +36,13 @@ class SettingsController {
     return updatedSettings
   }
 
-  static async _fillMissingFields (settings) {
+  static _fillMissingFields (accountId, settings) {
     for (const key of Object.keys(defaultSettings)) {
       if (typeof settings[key] === 'undefined') {
         settings[key] = defaultSettings[key]
       }
     }
+    settings.accountId = accountId
     return settings
   }
 
