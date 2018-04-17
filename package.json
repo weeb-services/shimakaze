@@ -5,20 +5,20 @@
   "main": "src/index.js",
   "serviceName": "reputation",
   "dependencies": {
-    "@weeb_services/wapi-core": "^1.4.1-alpha8",
-    "ajv": "^6.1.1",
-    "body-parser": "^1.17.2",
+    "@weeb_services/wapi-core": "^1.4.1",
+    "ajv": "^6.4.0",
+    "body-parser": "^1.18.2",
     "cors": "^2.8.4",
-    "express": "^4.15.3",
-    "mongoose": "^5.0.3",
-    "winston": "^2.3.1"
+    "express": "^4.16.3",
+    "mongoose": "^5.0.15",
+    "winston": "^2.4.1"
   },
   "devDependencies": {
-    "eslint": "^4.17.0",
-    "eslint-config-standard": "^11.0.0-beta.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-node": "^5.2.1",
-    "eslint-plugin-promise": "^3.6.0",
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1"
   },
   "scripts": {
