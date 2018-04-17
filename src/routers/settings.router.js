@@ -10,6 +10,7 @@ class SettingsRouter extends BaseRouter {
     super()
     this.get('/settings', async req => {
       const settings = await SettingsController.getSettings(req.account.id)
+      settings.reputationCooldown = settings.reputationCooldown.getTime() / 1000
       return {settings}
     })
     this.post('/settings', async req => {
@@ -24,10 +25,12 @@ class SettingsRouter extends BaseRouter {
         }
       }
       const settings = await SettingsController.updateSettings(req.account.id, req.body)
+      settings.reputationCooldown = settings.reputationCooldown.getTime() / 1000
       return {settings}
     })
     this.delete('/settings', async req => {
       const settings = await SettingsController.resetSettings(req.account.id)
+      settings.reputationCooldown = settings.reputationCooldown.getTime() / 1000
       return {settings}
     })
   }
